@@ -53,7 +53,15 @@ void step() {
         exitProgram("Cya!");
       }
 
-      print(colored(Foreground_Blue, "Hello !"));
+      InputEvent eventToHandle;
+      eventToHandle.type =
+          (event.Event.KeyEvent.bKeyDown) ? KeyPressed : KeyReleased;
+      eventToHandle.event.keyEvent.character =
+          event.Event.KeyEvent.uChar.UnicodeChar;
+
+      handler(eventToHandle);
+
+      print_f(colored(Foreground_Blue, "Hello !"));
       break;
     default:
       break;
@@ -64,6 +72,10 @@ void step() {
 void restore() { SetConsoleActiveScreenBuffer(stdOut); }
 
 void print(char *message) {
+  WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
+}
+
+void print_f(char *message) {
   WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
   free(message);
 }

@@ -11,6 +11,8 @@ void step();
 
 // Prints the data to the output
 void print(char *data);
+// Prints the data to the output and frees the data
+void print_f(char *data);
 
 typedef enum { KeyPressed, KeyReleased } InputEventType;
 

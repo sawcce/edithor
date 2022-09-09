@@ -3,9 +3,7 @@
 #include "colors.h"
 #include "hal.h"
 
-
 #ifdef _WIN64
-#include <conio.h>
 #include <windows.h>
 
 HANDLE hStdin, stdOut, screenBuffer;

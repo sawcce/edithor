@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "hal.h"
 #include "colors.h"
 

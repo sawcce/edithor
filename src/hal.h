@@ -18,9 +18,11 @@ typedef struct {
   char character;
 } KeyEvent;
 
-struct InputEvent {
+typedef struct {
   InputEventType type;
   union {
     KeyEvent keyEvent;
   } event;
-};
+} InputEvent;
+
+extern void (*handler)(InputEvent);

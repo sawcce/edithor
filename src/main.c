@@ -15,8 +15,11 @@ void moveCursorTo(unsigned int x, unsigned int y);
 
 int width, height = 0;
 
+void handle(InputEvent event) { print("Event!"); }
+
 int main() {
   setup();
+  handler = &handle;
 
   while (1) {
     step();

@@ -60,8 +60,6 @@ void step() {
           event.Event.KeyEvent.uChar.UnicodeChar;
 
       handler(eventToHandle);
-
-      print_f(colored(Foreground_Blue, "Hello !"));
       break;
     default:
       break;

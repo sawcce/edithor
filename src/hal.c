@@ -55,7 +55,7 @@ void run() {
         COORD coords = {.X = 0, .Y = 0};
 
         char *msg = colored(Foreground_Blue, "Hello !");
-        print(screenBuffer, msg, strlen(msg), NULL, NULL);
+        print(screenBuffer);
         free(msg);
         break;
       default:

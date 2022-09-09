@@ -9,13 +9,6 @@
 #include "hal.h"
 #include "utils.h"
 
-char *buffer;
-char *inputBuffer;
-
-void moveCursorTo(unsigned int x, unsigned int y);
-
-int width, height = 0;
-
 void handle(InputEvent event) {
   switch (event.type) {
   case KeyPressed:

@@ -1,8 +1,13 @@
+// State functions
+
+// A function to bootstrap the app (setup the buffers, enter raw mode)
 void setup();
-void print(char *data);
+// Restore the terminal back to it's original state
 void restore();
+// Runs a step in the app (acquire input and events)
 void step();
-void run();
+
+void print(char *data);
 
 typedef enum { KeyPressed, KeyReleased } InputEventType;
 

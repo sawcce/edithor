@@ -1,5 +1,8 @@
-#include "hal.h"
+#include <stdio.h>
+
 #include "colors.h"
+#include "hal.h"
+
 
 #ifdef _WIN64
 #include <conio.h>
@@ -62,6 +65,10 @@ void step() {
 }
 
 void restore() { SetConsoleActiveScreenBuffer(stdOut); }
+
+void print(char *message) {
+  WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
+}
 
 void exitProgram(char *message) {
   WriteConsole(stdOut, message, strlen(message), NULL, NULL);

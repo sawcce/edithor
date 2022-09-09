@@ -3,6 +3,8 @@
 #include "colors.h"
 #include "hal.h"
 
+void (*handler)(InputEvent);
+
 #ifdef _WIN64
 #include <windows.h>
 
@@ -50,7 +52,6 @@ void step() {
       if (event.Event.KeyEvent.uChar.UnicodeChar == 'q') {
         exitProgram("Cya!");
       }
-      COORD coords = {.X = 0, .Y = 0};
 
       char *msg = colored(Foreground_Blue, "Hello !");
       WriteConsole(screenBuffer, msg, strlen(msg), NULL, NULL);

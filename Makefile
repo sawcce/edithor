@@ -1,7 +1,10 @@
 compiler := clang
 program_name := edithor
-requirements := hal colors
-files := build\colors.o build\hal.o
+requirements := hal colors utils
+files := build\colors.o build\hal.o build\utils.o
+
+utils: src/utils.c
+	$(compiler) src\utils.c -c -o build\utils.o
 
 hal: src/hal.c
 	$(compiler) src\hal.c -c -o build\hal.o

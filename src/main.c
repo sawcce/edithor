@@ -17,7 +17,11 @@ int width, height = 0;
 
 int main() {
   setup();
-  run();
+
+  while (1) {
+    step();
+  }
+
   restore();
   return 0;
 }

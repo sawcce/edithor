@@ -35,30 +35,28 @@ void setup() {
   }
 }
 
-void run() {
-  while (1) {
-    if (!ReadConsoleInput(hStdin,     // input buffer handle
-                          irInBuf,    // buffer to read into
-                          128,        // size of read buffer
-                          &cNumRead)) // number of records read
-      exitProgram("ReadConsoleInput");
-    for (int i = 0; i < cNumRead; i++) {
-      INPUT_RECORD event = irInBuf[i];
+void step() {
+  if (!ReadConsoleInput(hStdin,     // input buffer handle
+                        irInBuf,    // buffer to read into
+                        128,        // size of read buffer
+                        &cNumRead)) // number of records read
+    exitProgram("ReadConsoleInput");
+  for (int i = 0; i < cNumRead; i++) {
+    INPUT_RECORD event = irInBuf[i];
 
-      switch (event.EventType) {
-      case KEY_EVENT:
-        if (event.Event.KeyEvent.uChar.UnicodeChar == 'q') {
-          exitProgram("Cya!");
-        }
-        COORD coords = {.X = 0, .Y = 0};
-
-        char *msg = colored(Foreground_Blue, "Hello !");
-        WriteConsole(screenBuffer, msg, strlen(msg), NULL, NULL);
-        free(msg);
-        break;
-      default:
-        break;
+    switch (event.EventType) {
+    case KEY_EVENT:
+      if (event.Event.KeyEvent.uChar.UnicodeChar == 'q') {
+        exitProgram("Cya!");
       }
+      COORD coords = {.X = 0, .Y = 0};
+
+      char *msg = colored(Foreground_Blue, "Hello !");
+      WriteConsole(screenBuffer, msg, strlen(msg), NULL, NULL);
+      free(msg);
+      break;
+    default:
+      break;
     }
   }
 }

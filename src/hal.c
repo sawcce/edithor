@@ -55,7 +55,7 @@ void run() {
         COORD coords = {.X = 0, .Y = 0};
 
         char *msg = colored(Foreground_Blue, "Hello !");
-        print(screenBuffer);
+        print(msg);
         free(msg);
         break;
       default:
@@ -68,7 +68,7 @@ void run() {
 void restore() { SetConsoleActiveScreenBuffer(stdOut); }
 
 void print(char * message) {
-	WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
+  WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
 }
 
 void exitProgram(char *message) {

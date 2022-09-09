@@ -67,6 +67,10 @@ void run() {
 
 void restore() { SetConsoleActiveScreenBuffer(stdOut); }
 
+void print(char * message) {
+	WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
+}
+
 void exitProgram(char *message) {
   WriteConsole(stdOut, message, strlen(message), NULL, NULL);
   ExitProcess(1);

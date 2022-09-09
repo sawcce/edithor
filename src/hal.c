@@ -53,9 +53,7 @@ void step() {
         exitProgram("Cya!");
       }
 
-      char *msg = colored(Foreground_Blue, "Hello !");
-      WriteConsole(screenBuffer, msg, strlen(msg), NULL, NULL);
-      free(msg);
+      print(colored(Foreground_Blue, "Hello !"));
       break;
     default:
       break;
@@ -67,6 +65,7 @@ void restore() { SetConsoleActiveScreenBuffer(stdOut); }
 
 void print(char *message) {
   WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
+  free(message);
 }
 
 void exitProgram(char *message) {

@@ -28,3 +28,5 @@ typedef struct {
 } InputEvent;
 
 extern void (*handler)(InputEvent);
+
+extern unsigned short int termHeight, termWidth;

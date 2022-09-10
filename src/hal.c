@@ -4,6 +4,7 @@
 #include "hal.h"
 
 void (*handler)(InputEvent);
+unsigned short int termWidth, termHeight = 0;
 
 #ifdef _WIN64
 #include <windows.h>
@@ -21,9 +22,18 @@ void setup() {
   hStdin = GetStdHandle(STD_INPUT_HANDLE);
   stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+  GetConsoleScreenBufferInfo(stdOut, &csbi);
+  termWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+  termHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+
   screenBuffer = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE,
                                            FILE_SHARE_WRITE | FILE_SHARE_WRITE,
                                            NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+
+  SetConsoleMode(screenBuffer, ENABLE_WINDOW_INPUT | ENABLE_EXTENDED_FLAGS |
+                                   ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 
   if (stdOut == INVALID_HANDLE_VALUE || screenBuffer == INVALID_HANDLE_VALUE) {
     printf("CreateConsoleScreenBuffer failed - (%d)\n", GetLastError());
@@ -61,6 +71,9 @@ void step() {
 
       handler(eventToHandle);
       break;
+    case WINDOW_BUFFER_SIZE_EVENT:
+      termWidth = event.Event.WindowBufferSizeEvent.dwSize.X;
+      termHeight = event.Event.WindowBufferSizeEvent.dwSize.Y;
     default:
       break;
     }

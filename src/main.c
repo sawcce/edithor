@@ -9,12 +9,23 @@
 #include "hal.h"
 #include "utils.h"
 
+void rainbow() {
+  for (float i = 0; i < 255; i += 255.0 / termWidth) {
+    print_f(format("\x1b[48;2;255;12;%dm ", (int)i));
+  }
+  print("\x1b[0m\n");
+}
+
 void handle(InputEvent event) {
   switch (event.type) {
   case KeyPressed:
-    print_f(format("Key '%s' pressed\n", event.event.keyEvent.character));
+    if (event.event.keyEvent.character == 'r') {
+      rainbow();
+    } else if (event.event.keyEvent.character == 'c') {
+      print("\x1b[2J");
+    }
   case KeyReleased:
-    print_f(format("Key '%s' released\n", event.event.keyEvent.character));
+    // print_f(format("Key '%c' released\n", event.event.keyEvent.character));
     break;
   }
 }

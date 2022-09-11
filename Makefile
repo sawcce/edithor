@@ -3,6 +3,9 @@ program_name := edithor
 requirements := hal colors utils
 files := build\colors.o build\hal.o build\utils.o
 
+bootstrap:
+	mkdir build\
+
 utils: src/utils.c
 	$(compiler) src\utils.c -c -o build\utils.o
 

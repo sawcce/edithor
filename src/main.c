@@ -11,7 +11,7 @@
 
 void rainbow() {
   for (float i = 0; i < 255; i += 255.0 / termWidth) {
-    print_f(format("\x1b[48;2;255;12;%dm ", (int)i));
+    print_f(colored((Color){125, 152, i}, (Color){0, 0, 0}, " "));
   }
   print("\x1b[0m\n");
 }

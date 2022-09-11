@@ -3,11 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *colored(Color color, char *message) {
-  char *format = "\x1b[%dm%s";
+char *colored(Color bg, Color fg, char *message) {
+  char *format = "\x1b[48;2;%i;%i;%im\x1b[38;2;%i;%i;%im%s\x1b[0m";
 
-  char *str = malloc(snprintf(NULL, 0, format, color, message));
-  sprintf(str, format, color, message);
+  char *str = malloc(
+      snprintf(NULL, 0, format, bg.r, bg.g, bg.b, fg.r, fg.g, fg.b, message));
+  sprintf(str, format, bg.r, bg.g, bg.b, fg.r, fg.g, fg.b, message);
 
   return str;
 }

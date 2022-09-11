@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "colors.h"
 #include "hal.h"
@@ -9,7 +10,7 @@ unsigned short int termWidth, termHeight = 0;
 #ifdef _WIN64
 #include <windows.h>
 
-HANDLE hStdin, stdOut, screenBuffer;
+HANDLE stdIn, stdOut;
 
 DWORD cNumRead, fdwMode, i;
 INPUT_RECORD irInBuf[128];
@@ -19,8 +20,11 @@ DWORD fdwMode, fdwSaveOldMode, cNumRead;
 void exitProgram();
 
 void setup() {
-  hStdin = GetStdHandle(STD_INPUT_HANDLE);
+  stdIn = GetStdHandle(STD_INPUT_HANDLE);
   stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+  if (!GetConsoleMode(stdIn, &fdwSaveOldMode))
+    exitProgram("Couldn't get console mode!");
 
   CONSOLE_SCREEN_BUFFER_INFO csbi;
 
@@ -28,28 +32,16 @@ void setup() {
   termWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
   termHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 
-  screenBuffer = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE,
-                                           FILE_SHARE_WRITE | FILE_SHARE_WRITE,
-                                           NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+  SetConsoleMode(stdIn, ENABLE_WINDOW_INPUT | ENABLE_EXTENDED_FLAGS |
+                            ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 
-  SetConsoleMode(screenBuffer, ENABLE_WINDOW_INPUT | ENABLE_EXTENDED_FLAGS |
-                                   ENABLE_VIRTUAL_TERMINAL_PROCESSING);
-
-  if (stdOut == INVALID_HANDLE_VALUE || screenBuffer == INVALID_HANDLE_VALUE) {
-    printf("CreateConsoleScreenBuffer failed - (%d)\n", GetLastError());
-    ExitProcess(1);
-  }
-  hStdin = GetStdHandle(STD_INPUT_HANDLE);
-  stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
-  if (!SetConsoleActiveScreenBuffer(screenBuffer)) {
-    printf("SetConsoleActiveScreenBuffer failed - (%d)\n", GetLastError());
-    ExitProcess(1);
-  }
+  // Alternate Screen Buffer sequence
+  // https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#alternate-screenBufferscreen-buffer
+  print("\x1b[?1049h");
 }
 
 void step() {
-  if (!ReadConsoleInput(hStdin,     // input buffer handle
+  if (!ReadConsoleInput(stdIn,      // input buffer handle
                         irInBuf,    // buffer to read into
                         128,        // size of read buffer
                         &cNumRead)) // number of records read
@@ -80,19 +72,26 @@ void step() {
   }
 }
 
-void restore() { SetConsoleActiveScreenBuffer(stdOut); }
+void restore() {
+  SetConsoleMode(stdIn, fdwSaveOldMode);
+
+  // Alternate Screen Buffer sequence
+  // https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences#alternate-screenBufferscreen-buffer
+  print("\x1b[?1049l");
+}
 
 void print(char *message) {
-  WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
+  WriteConsole(stdOut, message, strlen(message), NULL, NULL);
 }
 
 void print_f(char *message) {
-  WriteConsole(screenBuffer, message, strlen(message), NULL, NULL);
+  WriteConsole(stdOut, message, strlen(message), NULL, NULL);
   free(message);
 }
 
 void exitProgram(char *message) {
-  WriteConsole(stdOut, message, strlen(message), NULL, NULL);
+  print(message);
+  print("\n");
   ExitProcess(1);
 }
 

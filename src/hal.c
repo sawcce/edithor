@@ -52,6 +52,7 @@ void step() {
     switch (event.EventType) {
     case KEY_EVENT:
       if (event.Event.KeyEvent.uChar.UnicodeChar == 'q') {
+        restore();
         exitProgram("Cya!");
       }
 

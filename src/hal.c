@@ -3,6 +3,7 @@
 
 #include "colors.h"
 #include "hal.h"
+#include "utils.h"
 
 void (*handler)(InputEvent);
 unsigned short int termWidth, termHeight = 0;
@@ -61,6 +62,8 @@ void step() {
           (event.Event.KeyEvent.bKeyDown) ? KeyPressed : KeyReleased;
       eventToHandle.event.keyEvent.character =
           event.Event.KeyEvent.uChar.UnicodeChar;
+      eventToHandle.event.keyEvent.keyCode =
+          event.Event.KeyEvent.wVirtualKeyCode;
 
       handler(eventToHandle);
       break;

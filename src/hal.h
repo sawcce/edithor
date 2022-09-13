@@ -18,6 +18,7 @@ typedef enum { KeyPressed, KeyReleased } InputEventType;
 
 typedef struct {
   char character;
+  unsigned int keyCode;
 } KeyEvent;
 
 typedef struct {

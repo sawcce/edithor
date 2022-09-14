@@ -1,5 +1,6 @@
 CC := clang
 CFLAGS := -Wall
+NAME := edithor
 
 sources := $(wildcard src/*.c)
 outputs = $(wildcard build/*.o)
@@ -17,7 +18,7 @@ $(sources):
 	@printf "\e[32m$@ built!\n\e[0m"
 
 build/edithor.exe: $(sources)
-	$(CC) $(outputs) -o build\$(program_name).exe -Wall $(CFLAGS)
+	$(CC) $(outputs) -o build\$(NAME).exe -Wall $(CFLAGS)
 
 .PHONY: build
 build: build/edithor.exe

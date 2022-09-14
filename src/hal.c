@@ -52,11 +52,6 @@ void step() {
 
     switch (event.EventType) {
     case KEY_EVENT:
-      if (event.Event.KeyEvent.uChar.UnicodeChar == 'q') {
-        restore();
-        exitProgram("Cya!");
-      }
-
       InputEvent eventToHandle;
       eventToHandle.type =
           (event.Event.KeyEvent.bKeyDown) ? KeyPressed : KeyReleased;

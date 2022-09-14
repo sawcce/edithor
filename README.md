@@ -17,6 +17,7 @@ Since there are no pre-built binaries available right now, the only way to use, 
 - Get a c compiler (gcc, clang...)
 
 ## Build
+The default compiler is clang but you can use any other compiler with the `CC` flag (`CC=your_compiler`)
 
 ```
 git clone https://github.com/sawcce/edithor Edithor

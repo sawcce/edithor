@@ -1,24 +1,32 @@
-compiler := clang
-program_name := edithor
-requirements := hal colors utils
-files := build\colors.o build\hal.o build\utils.o
+CC := clang
+CFLAGS := -Wall
 
+sources := $(wildcard src/*.c)
+outputs = $(wildcard build/*.o)
+
+.PHONY: bootstrap
 bootstrap:
 	mkdir build\
 
-utils: src/utils.c
-	$(compiler) src\utils.c -c -o build\utils.o
+.PHONY: sources $(sources)
+sources: $(sources)
 
-hal: src/hal.c
-	$(compiler) src\hal.c -c -o build\hal.o
+$(sources):
+	@printf "\e[34mBuilding: $@\e[0m\n"
+	@$(CC) $@ -c -o build/$(@:src/%.c=%.o) $(CFLAGS)
+	@printf "\e[32m$@ built!\n\e[0m"
 
-colors: src/colors.c
-	$(compiler) src\colors.c -c -o build\colors.o
+build/edithor.exe: $(sources)
+	$(CC) $(outputs) -o build\$(program_name).exe -Wall $(CFLAGS)
 
-main: src/main.c $(requirements)
-	$(compiler) src\main.c $(files) -o build\$(program_name).exe -Wall $(CFLAGS)
+.PHONY: build
+build: build/edithor.exe
 
-build: main 
+.PHONY: clean
+clean:
+	rm build/*.o -f
+	rm build/*.exe -f
+
 
 run:
 	.\build\edithor.exe

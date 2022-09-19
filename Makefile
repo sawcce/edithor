@@ -18,7 +18,7 @@ $(sources):
 	@printf "\e[32m$@ built!\n\e[0m"
 
 build/edithor.exe: $(sources)
-	$(CC) $(outputs) -o build\$(NAME).exe -Wall $(CFLAGS)
+	$(CC) $(outputs) -o build/$(NAME) -Wall $(CFLAGS)
 
 .PHONY: build
 build: build/edithor.exe
